@@ -30,7 +30,7 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.get('/:id', async (req: Request, res: Response) => {
     try {
-        const customer = await customerService.getCustomer(Number(req.params.id));
+        const customer = await customerService.getCustomer(String(req.params.id));
         if (!customer) {
             return res.status(404).json({ message: 'Customer not found' });
         }
@@ -46,7 +46,7 @@ router.put('/:id', async (req: Request, res: Response) => {
             const result = CustomerSchema.safeParse(req.body);
             if (!result.success) throw result.error;
             const customerData = result.data;
-            const updatedCustomer = await customerService.updateCustomer(Number(req.params.id), customerData);
+            const updatedCustomer = await customerService.updateCustomer(String(req.params.id), customerData);
             if (!updatedCustomer) {
                 return res.status(404).json({ message: 'Customer not found' });
             }
@@ -61,7 +61,7 @@ router.put('/:id', async (req: Request, res: Response) => {
 
 router.delete('/:id', async (req: Request, res: Response) => {
     try {
-        const success = await customerService.deleteCustomer(Number(req.params.id));
+        const success = await customerService.deleteCustomer(String(req.params.id));
         if (!success) {
             return res.status(404).json({ message: 'Customer not found' });
         }

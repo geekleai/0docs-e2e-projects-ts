@@ -1,28 +1,17 @@
-import { IsEmail, IsOptional, IsString, IsInt } from 'class-validator';
+import { z } from 'zod';
 
-export class ContactSchema {
-    @IsInt()
-    id!: number;
+export const ContactSchema = z.object({
+    id: z.string().optional(),
+    name: z.string(),
+    email: z.string().email(),
+    phone: z.string().optional(),
+    address: z.string().optional(),
+    customerId: z.number().int().optional(),
+    leadId: z.number().int().optional(),
+});
 
-    @IsString()
-    name!: string;
+export type Contact = z.infer<typeof ContactSchema>;
 
-    @IsEmail()
-    email!: string;
-
-    @IsOptional()
-    @IsString()
-    phone?: string;
-
-    @IsOptional()
-    @IsString()
-    address?: string;
-
-    @IsOptional()
-    @IsInt()
-    customerId?: number;
-
-    @IsOptional()
-    @IsInt()
-    leadId?: number;
-}
+// Add this for updating existing contacts
+export const UpdateContactSchema = ContactSchema.partial().required({ id: true });
+export type UpdateContact = z.infer<typeof UpdateContactSchema>;

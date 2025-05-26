@@ -1,4 +1,4 @@
-import { Contact } from '../models/contact';
+import { Contact } from '../schemas/contact';
 import { v4 as uuidv4 } from 'uuid';
 
 export class ContactService {
@@ -14,7 +14,7 @@ export class ContactService {
 
     public createContact(contact: Omit<Contact, 'id'>): Contact {
         const newContact: Contact = { id: uuidv4(), ...contact };
-        this.contactsDb.set(newContact.id, newContact);
+        this.contactsDb.set(newContact.id!, newContact);
         return newContact;
     }
 
